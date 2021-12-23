@@ -1,0 +1,5 @@
+.env
+out
+images
+.DS_Store
+pgsql-data
