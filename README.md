@@ -24,6 +24,12 @@ $ psql -h localhost -p 5432 -U admin -d mydb
 $ heroku pg:psql
 ```
 
+テスト
+```
+$ go get github.com/joho/godotenv
+$ godotenv -f .env go test -v ./...
+```
+
 ログの出力
 ```
 $ heroku logs --tail
