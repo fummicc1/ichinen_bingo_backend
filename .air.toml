@@ -2,7 +2,7 @@ root = "."
 tmp_dir = "out"
 
 [build]
-  cmd = "go build -o ./out/main ./src/main.go"
+  cmd = "go build -o ./out/main ./main.go"
   bin = "out/main"
   full_bin = "source .env && ./out/main"
   delay = 1000
