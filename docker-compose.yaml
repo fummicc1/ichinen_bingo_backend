@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    container_name: db
+    container_name: ichinen-bingo-db
     build:
       context: .
       dockerfile: ./db/Dockerfile
@@ -17,3 +17,6 @@ services:
       - ./db/batch:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
+volumes:
+  pgsql-data:
+    driver: local
