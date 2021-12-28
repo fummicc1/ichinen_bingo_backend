@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,6 +20,14 @@ func NewBingoHandler(bingoRepository repository.BingoRepository) BingoHandler {
 	}
 }
 
+func genBingoEchoMap(bingo entity.Bingo) echo.Map {
+	return echo.Map{
+		"id":        bingo.ID,
+		"title":     bingo.Title,
+		"todo_list": bingo.TodoList.Todos,
+	}
+}
+
 func (handler BingoHandler) GetBingo(ctx echo.Context) error {
 
 	idStr := ctx.Param("id")
@@ -26,7 +35,7 @@ func (handler BingoHandler) GetBingo(ctx echo.Context) error {
 
 	bingo, _ := handler.bingoRepository.GetBingo(ctx.Request().Context(), uint64(id))
 	return ctx.JSON(http.StatusOK, echo.Map{
-		"bingo": bingo,
+		"bingo": genBingoEchoMap(*bingo),
 	})
 }
 
@@ -44,7 +53,7 @@ func (handler BingoHandler) CreateBingo(ctx echo.Context) error {
 
 	if len(requestBody.Todos) != 25 {
 		return ctx.JSON(http.StatusBadRequest, echo.Map{
-			"message": "invalid todo length",
+			"message": fmt.Sprintf("invalid todo length. Expected 24 but %d", len(requestBody.Todos)),
 		})
 	}
 
@@ -59,6 +68,6 @@ func (handler BingoHandler) CreateBingo(ctx echo.Context) error {
 
 	bingo, _ := handler.bingoRepository.Create(ctx.Request().Context(), requestBody.Title, todoList)
 	return ctx.JSON(http.StatusOK, echo.Map{
-		"bingo": bingo,
+		"bingo": genBingoEchoMap(*bingo),
 	})
 }

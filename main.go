@@ -44,6 +44,7 @@ func main() {
 	})
 
 	e.GET("/api/bingo/:id", bingoHandler.GetBingo)
+	e.POST("/api/bingo", bingoHandler.CreateBingo)
 
 	e.Logger.Fatal(
 		e.Start(fmt.Sprintf(":%s", os.Getenv("PORT"))),
