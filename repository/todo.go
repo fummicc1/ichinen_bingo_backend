@@ -41,7 +41,7 @@ func (r BingoRepository) getTodoList(ctx context.Context, bingoID uint64) (*enti
 }
 
 func (r BingoRepository) CompleteTodo(ctx context.Context, bingoID uint64, index uint64) error {
-	query := `UPDATE todos is_completed = true WHERE bingo_id = $1 AND index = $2`
+	query := `UPDATE todos SET is_completed = true WHERE bingo_id = $1 AND index = $2`
 
 	_, err := r.sqlHandler.QueryContext(ctx, query, bingoID, index)
 	return err
