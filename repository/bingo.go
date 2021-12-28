@@ -31,10 +31,12 @@ func (r BingoRepository) GetBingo(ctx context.Context, bingoID uint64) (*entity.
 	if err != nil {
 		return nil, err
 	}
+	todoList, _ := r.getTodoList(ctx, bingoID)
+	bingo.TodoList = *todoList
 	return &bingo, nil
 }
 
-func (r BingoRepository) Create(ctx context.Context, title string) (*entity.Bingo, error) {
+func (r BingoRepository) Create(ctx context.Context, title string, todoList entity.TodoList) (*entity.Bingo, error) {
 	query := `INSERT INTO bingos (title) VALUES ($1) RETURNING id`
 
 	var bingo entity.Bingo
@@ -44,10 +46,13 @@ func (r BingoRepository) Create(ctx context.Context, title string) (*entity.Bing
 	rows.Scan(&bingo.ID)
 	bingo.Title = title
 
+	r.InitTodoList(ctx, bingo.ID, todoList)
+
 	if err != nil {
 		return nil, err
 	}
 
+	bingo.TodoList = todoList
 	return &bingo, nil
 }
 
