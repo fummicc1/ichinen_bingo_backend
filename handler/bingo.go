@@ -77,3 +77,17 @@ func (handler BingoHandler) CreateBingo(ctx echo.Context) error {
 		"bingo": genBingoEchoMap(*bingo),
 	})
 }
+
+func (handler BingoHandler) CompleteTodo(ctx echo.Context) error {
+
+	idStr := ctx.Param("id")
+	id, _ := strconv.Atoi(idStr)
+	indexStr := ctx.Param("index")
+	index, _ := strconv.Atoi(indexStr)
+
+	err := handler.bingoRepository.CompleteTodo(ctx.Request().Context(), uint64(id), uint64(index))
+	if err != nil {
+		return err
+	}
+	return ctx.NoContent(http.StatusAccepted)
+}
