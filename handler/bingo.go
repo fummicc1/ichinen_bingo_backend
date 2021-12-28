@@ -34,6 +34,12 @@ func (handler BingoHandler) GetBingo(ctx echo.Context) error {
 	id, _ := strconv.Atoi(idStr)
 
 	bingo, _ := handler.bingoRepository.GetBingo(ctx.Request().Context(), uint64(id))
+
+	if bingo == nil {
+		return ctx.JSON(http.StatusNotFound, echo.Map{
+			"message": fmt.Sprintf("Bingo Not Found in id %d.", id),
+		})
+	}
 	return ctx.JSON(http.StatusOK, echo.Map{
 		"bingo": genBingoEchoMap(*bingo),
 	})
